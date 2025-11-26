@@ -7,57 +7,70 @@ DELETE FROM focaccia;
 DELETE FROM ingredient;
 DELETE FROM marque;
 
--- 1) marque
--- CSV : nom
-LOAD DATA LOCAL INFILE 'data/marque.csv'
-INTO TABLE marque
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"' 
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-(nom);
+-- On remet les compteurs d'auto-incrément à 1
+ALTER TABLE focaccia_ingredient AUTO_INCREMENT = 1;
+ALTER TABLE boisson AUTO_INCREMENT = 1;
+ALTER TABLE focaccia AUTO_INCREMENT = 1;
+ALTER TABLE ingredient AUTO_INCREMENT = 1;
+ALTER TABLE marque AUTO_INCREMENT = 1;
 
--- 2) ingredient
--- CSV : nom
-LOAD DATA LOCAL INFILE 'data/ingredient.csv'
-INTO TABLE ingredient
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"' 
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-(nom);
+-- 1) Marques
+INSERT INTO marque (nom) VALUES
+('Coca-cola'),
+('Pepsico'),
+('Monster'),
+('Cristalline');
 
--- 3) focaccia
--- CSV : nom,prix,ingredients
--- On ignore la colonne ingredients (texte)
-LOAD DATA LOCAL INFILE 'data/focaccia.csv'
-INTO TABLE focaccia
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"' 
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-(nom, prix, @ingredients_texte);
+-- 2) Ingrédients
+INSERT INTO ingredient (nom) VALUES
+('Ail'),             -- id_ingredient = 1
+('Ananas'),          -- 2
+('Artichaut'),       -- 3
+('Bacon'),           -- 4
+('Base Tomate'),     -- 5
+('Base crème'),      -- 6
+('Champignon'),      -- 7
+('Chevre'),          -- 8
+('Cresson'),         -- 9
+('Emmental'),        -- 10
+('Gorgonzola'),      -- 11
+('Jambon cuit'),     -- 12
+('Jambon fumé'),     -- 13
+('Oeuf'),            -- 14
+('Oignon'),          -- 15
+('Olive noire'),     -- 16
+('Olive verte'),     -- 17
+('Parmesan'),        -- 18
+('Piment'),          -- 19
+('Poivre'),          -- 20
+('Pomme de terre'),  -- 21
+('Raclette'),        -- 22
+('Salami'),          -- 23
+('Tomate cerise'),   -- 24
+('Mozarella');       -- 25
 
--- 4) boisson
--- CSV : nom,marque
-DROP TEMPORARY TABLE IF EXISTS boisson_tmp;
+-- 3) Focaccias
+INSERT INTO focaccia (nom, description, prix, disponibilite) VALUES
+('Mozaccia',        NULL,  9.80, 1),  -- id_focaccia = 1
+('Gorgonzollaccia', NULL, 10.80, 1),  -- 2
+('Raclaccia',       NULL,  8.90, 1),  -- 3
+('Emmentalaccia',   NULL,  9.80, 1),  -- 4
+('Tradizione',      NULL,  8.90, 1),  -- 5
+('Hawaienne',       NULL, 11.20, 1),  -- 6
+('Américaine',      NULL, 10.80, 1),  -- 7
+('Paysanne',        NULL, 12.80, 1);  -- 8
 
-CREATE TEMPORARY TABLE boisson_tmp (
-  nom VARCHAR(150),
-  marque VARCHAR(100)
-);
-
-LOAD DATA LOCAL INFILE 'data/boisson.csv'
-INTO TABLE boisson_tmp
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"' 
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-(nom, marque);
-
--- On insère dans la vraie table boisson en reliant la marque texte à la table marque
-INSERT INTO boisson (nom, id_marque, prix)
-SELECT bt.nom, m.id_marque, 0
-FROM boisson_tmp bt
-JOIN marque m ON m.nom = bt.marque;
-
+-- 4) Boissons (exemple simple, tu peux adapter)
+INSERT INTO boisson (nom, id_marque, prix) VALUES
+('Coca-cola zéro',        1, 0.00),
+('Coca-cola original',    1, 0.00),
+('Fanta citron',          1, 0.00),
+('Fanta orange',          1, 0.00),
+('Capri-sun',             1, 0.00),
+('Pepsi',                 2, 0.00),
+('Pepsi Max Zéro',        2, 0.00),
+('Lipton zéro citron',    2, 0.00),
+('Lipton Peach',          2, 0.00),
+('Monster energy ultra gold', 3, 0.00),
+('Monster energy ultra blue', 3, 0.00),
+('Eau de source',         4, 0.00);
