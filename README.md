@@ -26,10 +26,16 @@ Tifosi-devoir6-BDD/
 │
 ├── data/
 │   ├── focaccia_ingredient.csv
-│   ├── focaccia.csv   (optionnel)
-│   ├── ingredient.csv (optionnel)
-│   ├── boisson.csv    (optionnel)
-│   └── marque.csv     (optionnel)
+│   ├── focaccia.csv   
+│   ├── ingredient.csv 
+│   ├── boisson.csv    
+│   └── marque.csv     
+│
+├── src/
+│ ├── focaccia.xlsx
+│ ├── ingredient.xlsx
+│ ├── boisson.xlsx
+│ └── marque.xlsx
 │
 └── README.md
 
